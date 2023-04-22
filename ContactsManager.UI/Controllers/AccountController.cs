@@ -33,6 +33,7 @@ namespace ContactsManager.UI.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterDTO registerDTO)
 		{
 			// Check for validation errors (might not happen with client side validation but is possible)

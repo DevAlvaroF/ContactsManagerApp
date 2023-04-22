@@ -36,6 +36,14 @@ else
 	app.UseExceptionHandlingMiddleware();
 }
 
+// ----------------------------------------------------
+//				Request HTTPS and force it
+// add also "http://localhost:52789" in launchSettings.json
+// firefox doesn't work well in "Developer" environment
+// Workaround: https://learn.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-7.0&tabs=visual-studio%2Clinux-ubuntu#trust-ff
+// ----------------------------------------------------
+//app.UseHsts();
+//app.UseHttpsRedirection();
 
 // ----------------------------------------------------
 //				Create Application Pipeline
