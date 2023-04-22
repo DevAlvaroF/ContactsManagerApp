@@ -1,5 +1,7 @@
 # Contact sManager App
 
+VIDEO: https://youtu.be/mVLp42-ysIA
+
 Contacts manager app developed on C# .Net 6.0
 - Code first EF
 - TDD during development
