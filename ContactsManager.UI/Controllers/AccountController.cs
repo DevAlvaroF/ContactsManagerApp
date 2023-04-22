@@ -10,7 +10,7 @@ using System.Data;
 namespace ContactsManager.UI.Controllers
 {
 	[Route("[controller]/[action]")]
-	[AllowAnonymous]
+
 	public class AccountController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
@@ -27,13 +27,14 @@ namespace ContactsManager.UI.Controllers
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		[HttpGet]
+		[Authorize("CustomBlockIfLogin")] // Alternative: [AllowAnonymous]
 		public IActionResult Register()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		[Authorize("CustomBlockIfLogin")]
 		public async Task<IActionResult> Register(RegisterDTO registerDTO)
 		{
 			// Check for validation errors (might not happen with client side validation but is possible)
@@ -117,13 +118,14 @@ namespace ContactsManager.UI.Controllers
 		}
 
 		[HttpGet]
-		[Authorize("CustomBlockLogin")]
+		[Authorize("CustomBlockIfLogin")]
 		public IActionResult Login()
 		{
 			return View();
 		}
 
 		[HttpPost]
+		[Authorize("CustomBlockIfLogin")]
 		public async Task<IActionResult> Login(LoginDTO loginDTO, string ReturnUrl)
 		{
 			// Check for validation errors (might not happen with client side validation but is possible)
@@ -173,6 +175,7 @@ namespace ContactsManager.UI.Controllers
 			return RedirectToAction(nameof(PersonsController.Index), "Persons");
 		}
 
+		[Authorize("CustomBlockIfLogin")]
 		public async Task<IActionResult> IsEmailAlreadyRegistered(string email)
 		{
 			ApplicationUser User = await _userManager.FindByEmailAsync(email);

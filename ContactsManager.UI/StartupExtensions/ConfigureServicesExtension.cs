@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -45,6 +46,10 @@ namespace ContactsManager.StartupExtensions
 					Value = "Started"
 				});
 
+
+				// Anti Forgery globally for POST Action methods
+				options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+
 			});
 
 			// =======================================
@@ -81,11 +86,22 @@ namespace ContactsManager.StartupExtensions
 				options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
 				// Custom Policy
-				options.AddPolicy("CustomBlockLogin", policy =>
+				options.AddPolicy("CustomBlockIfLogin", policy =>
 				{
 					policy.RequireAssertion(context =>
 					{
-						return !context.User.Identity?.IsAuthenticated ?? false;
+						// If not authenticated or no identity
+						if (context.User.Identity == null || (!context.User.Identity.IsAuthenticated))
+						{
+							// Visible: return true
+							return true;
+						}
+
+						// Authenticated
+						// Invisible: return false
+						return false;
+
+
 					});
 				});
 			});
