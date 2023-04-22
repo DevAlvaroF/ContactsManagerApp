@@ -1,4 +1,10 @@
-# ContactsManagerApp
+# Contact sManager App
+
+Contacts manager app developed on C# .Net 6.0
+- Code first EF
+- TDD during development
+- Clean design architecture
+
 
 | **FrontEnd** 	| **BackEnd** 	| **Database** 	| **Frameworks/Tools** 	|
 |:------------:	|:-----------:	|:------------:	|:--------------------:	|
@@ -6,6 +12,9 @@
 |      CSS     	|             	|              	|         xUnit        	|
 |  Javascript  	|             	|              	|        Serilog       	|
 
+## Potential Improvements
+1. Replace client-side validation with Blazor alternative
+2. Implement SQLite instead of MS SQL
 
 ## Demo Images
 
