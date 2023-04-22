@@ -1,0 +1,126 @@
+﻿@model RegisterDTO
+
+@{
+	ViewBag.Title = "Register";
+	ViewBag.CurrentUrl = "/account/register";
+}
+
+<!-- BreadCrumbs -->
+<div class="flex">
+	<div class="flex-1">
+		<div class="text-grey">
+			<span>Contacts</span>
+			<i class="fa-solid fa-caret-right"></i>
+			<span class="text-grey">Register</span>
+		</div>
+	</div>
+</div>
+<!-- BreadCrumbs (END) -->
+<!-- Registred Link -->
+<div class="form-container">
+	Already registered? <a asp-controller="Account" asp-action="Login" class="link-hover">Login</a>
+	<h2 class="text-large">Register</h2>
+
+	<form asp-controller="Account" asp-action="Register" method="post">
+		@* PersonName *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="PersonName" class="form-label pt">Name</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for="PersonName" class="form-input" />
+				<span asp-validation-for="PersonName" class="text-red"></span>
+			</div>
+		</div>
+
+		@* Email *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="Email" class="form-label pt">Email</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for="Email" class="form-input" />
+				<span asp-validation-for="Email" class="text-red"></span>
+			</div>
+		</div>
+
+		@* Password *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="Password" class="form-label pt">Password</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for="Password" class="form-input" />
+				<span asp-validation-for="Password" class="text-red"></span>
+			</div>
+		</div>
+
+		@* ConfirmPassword *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="ConfirmPassword" class="form-label pt">Confirm Password</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for="ConfirmPassword" class="form-input" />
+				<span asp-validation-for="ConfirmPassword" class="text-red"></span>
+			</div>
+		</div>
+
+		@* PhoneNumber *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="Phone" class="form-label pt">Phone</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for="Phone" class="form-input" />
+				<span asp-validation-for="Phone" class="text-red"></span>
+			</div>
+		</div>
+
+		@* UserType *@
+		<div class="form-field flex">
+			<div class="w-25">
+				<label asp-for="UserType" class="form-label pt">User Type</label>
+			</div>
+			<div class="flex-1">
+				<input type="radio" id="User" asp-for="UserType" value="User" />
+				<label for="User">User</label>
+
+				<input type="radio" id="Admin" asp-for="UserType" value="Admin" />
+				<label for="Admin">Admin</label>
+			</div>
+			<span asp-validation-for="UserType" class="text-red"></span>
+		</div>
+
+		@*Register Button*@
+		<div class="form-field flex">
+			<div class="w-25"></div>
+			<div class="flex-1">
+				<button class="button button-green-back" type="submit">Register</button>
+				<div asp-validation-summary="All" class="text-red"></div>
+
+				<!-- Check for ViewBag validation errors -->
+				@if (ViewBag.Errors != null)
+				{
+					<div class="text-red">
+
+
+						<ul>
+							@foreach (string error in ViewBag.Errors)
+							{
+								<li class="li">@error</li>
+							}
+						</ul>
+					</div>
+				}
+			</div>
+		</div>
+	</form>
+</div>
+@* Client Side Validation *@
+@section scripts
+	{
+	<script asp-fallback-test="window.jQuery" asp-fallback-src="~/Scripts/jquery.min.js" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script asp-fallback-test="window.jQuery.validator" asp-fallback-src="~/Scripts/jquery.validate.min.js" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script asp-fallback-test="window.jQuery.validator.unobtrusive" asp-fallback-src="~/Scripts/jquery.validate.unobtrusive.min.js" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}

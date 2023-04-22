@@ -1,5 +1,9 @@
-﻿using ContactsManager.Filters.ActionFilters;
+﻿using ContactsManager.Core.Domain.IdentityEntities;
+using ContactsManager.Filters.ActionFilters;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
@@ -22,8 +26,8 @@ namespace ContactsManager.StartupExtensions
 			services.AddScoped<IPersonsSorterService, PersonsSorterService>();
 			services.AddScoped<ICountriesRepository, CountriesRepository>();
 			services.AddScoped<IPersonsRepository, PersonsRepository>();
-			services.AddTransient<ResponseHeaderActionFilter>();
-			services.AddTransient<PersonsCreateAndEditPostActionFilter>();
+			services.AddTransient<ResponseHeaderActionFilter>(); // global filter
+			services.AddTransient<PersonsCreateAndEditPostActionFilter>(); // global filter
 
 			// =======================================
 			// Adds controllers as services (with filters factory for DI)
@@ -52,8 +56,49 @@ namespace ContactsManager.StartupExtensions
 				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 			});
 
+			// ===================================================
+			// Add identity to the website with 2 IdentityEntities
+			// ===================================================
+			services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+			{
+				options.Password.RequiredLength = 5;
+				options.Password.RequireNonAlphanumeric = true;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = true;
+				options.Password.RequireDigit = false;
+				options.Password.RequiredUniqueChars = 3;
+
+			}).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders().AddUserStore<UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>>().AddRoleStore<RoleStore<ApplicationRole, ApplicationDbContext, Guid>>();
 
 
+			// ===================================================
+			// Enforcing authorization policy (user must be autheticated)
+			// for all the action methods
+			// ===================================================
+
+			services.AddAuthorization(options =>
+			{
+				options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
+				// Custom Policy
+				options.AddPolicy("CustomBlockLogin", policy =>
+				{
+					policy.RequireAssertion(context =>
+					{
+						return !context.User.Identity?.IsAuthenticated ?? false;
+					});
+				});
+			});
+
+			// ===================================================
+			// When identity cookie not valid/not supplied
+			// the fallback method goes to the following path
+			// ===================================================
+
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/account/login";
+			});
 
 			// =======================================
 			// HttpLogging Configuration for end of request messages with Serilog

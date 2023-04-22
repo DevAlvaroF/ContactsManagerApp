@@ -60,8 +60,28 @@ if (builder.Environment.IsEnvironment("Test") == false)
 }
 
 app.UseStaticFiles();
-app.UseRouting();
-app.MapControllers();
+
+app.UseRouting(); // Identifying action method based on rout
+app.UseAuthentication(); // Reads authentication cookie (after routing)
+app.UseAuthorization(); // Validates if we can access with 
+app.MapControllers(); // Executes filter pipeline (action + filters)
+
+// Conventional Global routing (gets substituted if attribute routing
+// used (fail safe, not really used)
+app.UseEndpoints(endpoints =>
+{
+	// Admin Area Conventional Routing
+	endpoints.MapControllerRoute(
+		name: "areas",
+		pattern: "{area:exists}/{controller=Home}/{action=Index}" // e.g Admin/Home/Index
+	);
+
+	// Normal Action Methods Conventional Routing
+	endpoints.MapControllerRoute(
+		name: "default",
+		pattern: "{controller}/{action}"
+		);
+});
 
 app.Run();
 

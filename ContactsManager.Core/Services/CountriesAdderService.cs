@@ -64,7 +64,8 @@ namespace Services
 						string? countryName = cellValue;
 
 						// Search Values of existing countries
-						bool countryExists = (await _countriesRepository.GetCountryByName(countryName)) != null;
+						Country? matchedCountry = await _countriesRepository.GetCountryByName(countryName);
+						bool countryExists = matchedCountry != null;
 
 						if (!countryExists)
 						{

@@ -1,9 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using ContactsManager.Core.Domain.IdentityEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Entities
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 	{
 		public virtual DbSet<Person> Persons { set; get; }
 		public virtual DbSet<Country> Countries { set; get; }
@@ -46,7 +48,8 @@ namespace Entities
 			// Fluent API
 			modelBuilder.Entity<Person>().Property(temp => temp.TIN).HasColumnName("TaxIdentificationNumber").HasColumnType("varchar(8)").HasDefaultValue("ABC12345");
 
-			//modelBuilder.Entity<Person>().HasIndex(temp => temp.TIN).IsUnique();
+			// Add uniqueness for Country name to avoid adding duplicates
+			modelBuilder.Entity<Country>().HasIndex(temp => temp.CountryName).IsUnique();
 
 			// check Constraint
 			modelBuilder.Entity<Person>().HasCheckConstraint("CHK_TIN", "len([TaxIdentificationNumber]) = 8");
