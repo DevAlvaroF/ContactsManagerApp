@@ -149,7 +149,10 @@ namespace ContactsManager.UI.Controllers
 				{
 					if (await _userManager.IsInRoleAsync(user, UserTypeOptions.Admin.ToString()))
 					{
-						return RedirectToAction("Index", "Home", new { area = "AdminArea" });
+
+						// TO DO: Work on the AdminArea design
+						//return RedirectToAction("Index", "Home", new { area = "AdminArea" });
+						return RedirectToAction(nameof(PersonsController.Index), "Persons");
 					}
 				}
 
