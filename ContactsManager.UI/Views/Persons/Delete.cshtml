@@ -1,0 +1,74 @@
+﻿@model PersonResponse
+@{
+	ViewBag.Title = "Delete Person";
+}
+<!-- BreadCrumbs -->
+<div class="flex">
+
+	<div class="flex-1">
+		<div class="text-grey">
+			<span>Contacts</span>
+			<i class="fa-solid fa-caret-right"></i>
+			<span class="text-grey">Persons</span>
+			<i class="fa-solid fa-caret-right"></i>
+			<span class="text-grey">Delete</span>
+		</div>
+	</div>
+</div>
+<!-- BreadCrumbs (END) -->
+
+
+
+<div class="form-container">
+
+	<a asp-controller="Persons" asp-action="Index" class="link-hove">Back to Persons List</a>
+	<h2 class="text-large">Delete Person</h2>
+	<h3>Are you sure you want to delete?</h3>
+
+
+
+	<form asp-controller="Persons" asp-action="Delete" method="post">
+		<input type="hidden" asp-asp-for="PersonId" />
+		@*Person Name*@
+		<div class="flex">
+			<div class="w-25">
+				<label class="form-label pt" asp-for="PersonName">Person Name</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for=PersonName class="form-input" disabled="disabled" />
+			</div>
+		</div>
+
+		@*Email*@
+		<div class="flex">
+			<div class="w-25">
+				<label class="form-label pt" asp-for="Email">Email</label>
+			</div>
+			<div class="flex-1">
+				<input asp-for=Email class="form-input" disabled="disabled" />
+			</div>
+		</div>
+
+
+		@*Submit Button*@
+		<div class="flex">
+			<div class="w-25">
+			</div>
+			<div class="flex-1">
+				<button class="button button-red-back">Delete</button>
+			</div>
+			@if (ViewBag.Errors != null)
+			{
+				<div class="text-red ml">
+					<ul>
+						@foreach (string error in ViewBag.Errors)
+						{
+							<li class="ml">@error</li>
+						}
+					</ul>
+				</div>
+			}
+		</div>
+
+	</form>
+</div>

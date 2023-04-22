@@ -1,0 +1,17 @@
+﻿<thead>
+	<tr>
+		@foreach (KeyValuePair<string, string> field in ViewBag.SearchFields)
+		{
+			<th>
+				<a href="/persons/index?searchBy=@(ViewBag.CurrentSearchBy)&searchString=@(ViewBag.CurrentSearchString)&sortBy=@(field.Key)&sortOrder=@(ViewBag.CurrentSortOrder==SortOrderOptions.DESC.ToString()?SortOrderOptions.ASC:SortOrderOptions.DESC)">
+					@field.Value
+					@if (ViewBag.CurrentSortBy == field.Key)
+					{
+						<i class="fas @(ViewBag.CurrentSortOrder==SortOrderOptions.DESC.ToString()?"fa-sort-up":"fa-sort-down")"></i>
+					}
+				</a>
+			</th>
+		}
+		<th>Options</th>
+	</tr>
+</thead>

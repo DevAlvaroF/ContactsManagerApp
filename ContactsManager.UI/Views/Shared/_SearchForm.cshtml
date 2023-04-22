@@ -1,0 +1,27 @@
+﻿
+<select class="search-dropdown" name="searchBy" style="width:200px">
+	@foreach (KeyValuePair<string, string> field in ViewBag.SearchFields)
+	{
+		if (field.Key != "Age")
+		{
+			if (field.Key == ViewBag.CurrentSearchBy)
+			{
+				<option selected="selected" value="@field.Key">@field.Value</option>
+			}
+			else
+			{
+				<option value="@field.Key">@field.Value</option>
+			}
+		}
+	}
+	@* e.g. searchBy = PersonName*@
+</select>
+
+@* e.g. searchString = abc *@
+<input value="@ViewBag.CurrentSearchString" type="search" id="Search" class="search-text" placeholder="Search" name="searchString" style="width:200px" />
+
+@* Search Button *@
+<button class="search-button">Search</button>
+<a asp-controller="Persons" asp-action="Index" class="ml link-hover">Clear All</a>
+
+

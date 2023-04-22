@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PersonResponse>
+
+@{
+	ViewBag.Title = "Persons Page";
+
+	List<string> listTableHeaders = new List<string>() { nameof(PersonResponse.PersonName), nameof(PersonResponse.Email), nameof(PersonResponse.DateOfBirth) };
+}
+
+<form asp-controller="Persons" asp-action="Index" method="get">
+	@* Breadcrumbs *@
+	<div class="flex">
+		<!-- BreadCrumbs -->
+		<div class="flex-1">
+			<div class="text-grey">
+				<span>Contacts</span>
+				<i class="fa-solid fa-caret-right"></i>
+				<span class="text-grey">Persons</span>
+			</div>
+		</div>
+
+		<!-- Export Buttons -->
+		<div class="flex-1 text-right">
+			<a asp-controller="Persons" asp-action="Create" class="ml button-link button-blue-back button-blue-link">Create Person</a>
+			<a asp-controller="Persons" asp-action="PersonsPDF" class="ml button-link button-blue-back button-blue-link">Print PDF</a>
+			<a asp-controller="Persons" asp-action="PersonsCSV" class="ml button-link button-blue-back button-blue-link">Export CSV</a>
+			<a asp-controller="Persons" asp-action="PersonsExcel" class="ml button-link button-blue-back button-blue-link">Export Excel</a>
+		</div>
+	</div>
+
+	<div class="table-container">
+		<div class="flex">
+			<div class="flex-1">
+				<h1>Persons</h1>
+			</div>
+			<div class="flex-3 text-right">
+				<label>Search by:</label>
+				@* SEARCH FORM *@
+				@await Html.PartialAsync("_SearchForm")
+			</div>
+		</div>
+
+
+		<table class="table w-100 mt persons">
+			@* TABLE HEADER *@
+			@await Html.PartialAsync("_GridColumnHeader")
+
+			@* TABLE PERSON CONTENT *@
+			<tbody>
+				@foreach (PersonResponse personResponse in Model)
+				{
+					<tr>
+						<td style="width:10%">@personResponse.PersonName</td>
+						<td style="width:20%">@personResponse.Email</td>
+						<td style="width:10%">@personResponse.DateOfBirth?.ToString("dd MMM yyy")</td>
+						<td style="width:6%">@personResponse.Age</td>
+						<td style="width:8%">@personResponse.Gender</td>
+						<td style="width:10%">@personResponse.Country</td>
+						<td style="width:15%">@personResponse.Address</td>
+						<td style="width:8%">@personResponse.ReceiveNewsLetters</td>
+						<td style="width:20%">
+							@*Route would be edit/personId/*@
+							<a asp-controller="Persons" asp-action="Edit" asp-route-personId="@personResponse.PersonId" class="button-link button-blue-back">Edit</a>
+							<a asp-controller="Persons" asp-action="Delete" asp-route-personId="@personResponse.PersonId" class="button-link button-red-back">Delete</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+
+</form>
